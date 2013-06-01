@@ -1,0 +1,114 @@
+diff --git a/03_graph_prog_orig/include/application.h b/03_graph_prog/include/application.h
+index 0126b70..05f415e 100644
+--- a/03_graph_prog_orig/include/application.h
++++ b/03_graph_prog/include/application.h
+@@ -63,6 +63,10 @@ public:
+ private:
+ 	// The current scene to display
+ 	abstract_scene *content;
++
++	// States for the menu
++	bool menu_dirty, menu_visible;
++
+ 	// States for the terrain scene
+ 	bool terrain_solid, terrain_wireframe, terrain_levels;
+ 
+@@ -92,8 +96,10 @@ private:
+ 
+ 	// Static callbacks...
+ 	static void key_down_callback(unsigned char key, int x, int y);
++	static void menu_status_callback(int status);
++	static void idle_callback();
+ 	static void context_menu_callback(int item);
+ 	static void display_callback();
+ 	static void timer_callback(int value);
+ 
+-};
+\ No newline at end of file
++};
+diff --git a/03_graph_prog_orig/src/application.cpp b/03_graph_prog/src/application.cpp
+index 7449d53..422d800 100644
+--- a/03_graph_prog_orig/src/application.cpp
++++ b/03_graph_prog/src/application.cpp
+@@ -19,6 +19,8 @@ application::application()
+ 	instance = this;
+ 
+ 	content = 0;
++	menu_dirty = true;
++	menu_visible = false;
+ 	terrain_solid = true;
+ 	terrain_wireframe = false;
+ 	terrain_levels = false;
+@@ -54,6 +56,10 @@ int application::run(int argc, char* argv[])
+ 	glutDisplayFunc(display_callback);
+ 	// ... when a key was pressed
+ 	glutKeyboardFunc(key_down_callback);
++	// ... when the menu state changes
++	glutMenuStateFunc(menu_status_callback);
++	// ... if idle
++	glutIdleFunc(idle_callback);
+ 
+ 	// Run the timer callback which will trigger itself in the future
+ 	timer_callback(0);
+@@ -152,9 +158,8 @@ void application::context_menu_select(int item)
+ 			break;
+ 	}
+ 
+-
+-	// Update the context menu
+-	update_context_menu();
++	// schedule menu update
++	menu_dirty = true;
+ 
+ 	// Update display
+ 	display();
+@@ -188,7 +193,7 @@ void application::setup_context_menu()
+ 
+ 
+ 	// Attach the menu to the right mouse button
+-    glutAttachMenu(GLUT_RIGHT_BUTTON);
++	glutAttachMenu(GLUT_RIGHT_BUTTON);
+ 
+ 	// Initially fill in the missing menu entry names
+ 	update_context_menu();
+@@ -230,6 +235,9 @@ void application::update_context_menu()
+ 		mname<<"[ ]";
+ 	mname<<" Show level lines   (l) ";
+ 	glutChangeToMenuEntry(6, mname.str().c_str(), MA_TERRAIN_LEVELS);
++
++	// clear menu_dirty flag
++	menu_dirty = false;
+ }
+ 
+ 
+@@ -266,7 +274,6 @@ void application::display()
+ 	glMatrixMode(GL_MODELVIEW);
+ 	glPopMatrix();
+ 
+-
+ 	// Swap the just filled back buffer with the front buffer
+ 	// to display the result
+ 	glutSwapBuffers();
+@@ -331,6 +338,22 @@ void application::key_down_callback(unsigned char key, int x, int y)
+ }
+ 
+ 
++void application::menu_status_callback(int status)
++{
++	if(status == GLUT_MENU_IN_USE)
++		instance->menu_visible = true;
++	else
++		instance->menu_visible = false;
++}
++
++
++void application::idle_callback()
++{
++	if(!instance->menu_visible && instance->menu_dirty)
++		instance->update_context_menu();
++}
++
++
+ void application::display_callback()
+ {
+ 	instance->display();

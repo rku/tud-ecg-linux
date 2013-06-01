@@ -1,0 +1,40 @@
+diff --git a/03_graph_prog_orig/dependencies/qdbmp/include/qdbmp.h b/03_graph_prog/dependencies/qdbmp/include/qdbmp.h
+index 549fad3..e72532c 100644
+--- a/03_graph_prog_orig/dependencies/qdbmp/include/qdbmp.h
++++ b/03_graph_prog/dependencies/qdbmp/include/qdbmp.h
+@@ -1,7 +1,9 @@
+ #ifndef _BMP_H_
+ #define _BMP_H_
+ 
++#ifdef _MSC_VER
+ #pragma warning(disable:4996)
++#endif // _MSC_VER
+ 
+ 
+ /**************************************************************
+diff --git a/03_graph_prog_orig/include/tiny_vec.h b/03_graph_prog/include/tiny_vec.h
+index 5e2f824..3dd9e88 100644
+--- a/03_graph_prog_orig/include/tiny_vec.h
++++ b/03_graph_prog/include/tiny_vec.h
+@@ -19,8 +19,11 @@ At the end of this file the data types "point2d", "point3d" and
+ #include <cassert>
+ #include <math.h>
+ 
++#ifdef _MSC_VER
+ #pragma warning( push )
+ #pragma warning( disable : 4996 )
++#endif // _MSC_VER
++
+ template <typename T,int N>
+ class tiny_vec
+ {
+@@ -953,7 +956,9 @@ typedef tiny_vec<double, 2> point2d;
+ typedef tiny_vec<double, 3> point3d;
+ typedef tiny_vec<double, 4> point4d;
+ 
++#ifdef _MSC_VER
+ #pragma warning( pop )
++#endif // _MSC_VER
+ 
+ 
+ 
