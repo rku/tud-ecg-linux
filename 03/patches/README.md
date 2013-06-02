@@ -1,4 +1,3 @@
-
 fix_menu_update.diff
 ====================
 
@@ -29,5 +28,5 @@ guard_msvc_specific_pragmas.diff
 Guard some MSVC specific pragmas to avoid warnings when using other compilers
 than MSC.
 
-    [1]: http://www.opengl.org/resources/libraries/glut/spec3/node90.html
+  [1]: http://www.opengl.org/resources/libraries/glut/spec3/node90.html
 
