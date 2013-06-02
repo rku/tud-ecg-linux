@@ -3,7 +3,7 @@ fix_menu_update.diff
 
 Do not update menu in menu callback. This avoids illegal operations since the
 menu may still be visible when the callback code runs and causes errors with
-newer freeglut versions. The [documentation][1] advices:
+newer freeglut versions. The (free)glut [documentation][1] advices:
 
 > Remember that it is illegal to create or destroy menus or change, add, or
 > remove menu items while a menu (and any cascaded sub-menus) are in use (that
