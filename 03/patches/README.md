@@ -3,10 +3,17 @@ fix_menu_update.diff
 ====================
 
 Do not update menu in menu callback. This avoids illegal operations since the
-menu may still be visible when the callback code runs. This would lead to
-errors with newer freeglut versions. The patch updates the menu in an idle
-callback and manages a menu_dirty flag that indicates whether or not the menu
-requires updating.
+menu may still be visible when the callback code runs and causes errors with
+newer freeglut versions. The [documentation][1] advices:
+
+> Remember that it is illegal to create or destroy menus or change, add, or
+> remove menu items while a menu (and any cascaded sub-menus) are in use (that
+> is, ``popped up''). Use the menu status callback to know when to avoid menu
+> manipulation.
+
+The patch updates the menu in an idle callback and
+manages a menu_dirty flag that indicates whether or not the menu requires
+updating.
 
 fix_non_virtual_destructor.diff
 ===============================
@@ -21,4 +28,6 @@ guard_msvc_specific_pragmas.diff
 
 Guard some MSVC specific pragmas to avoid warnings when using other compilers
 than MSC.
+
+    [1]: http://www.opengl.org/resources/libraries/glut/spec3/node90.html
 
