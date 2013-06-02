@@ -2,10 +2,11 @@
 fix_menu_update.diff
 ====================
 
-Do not update menu in menu callback. This avoids illegal operations leading
-to errors with newer freeglut versions. This patch updates the menu in an
-idle callback and manages a menu_dirty flag that indicated whether or not the
-menu requires updating.
+Do not update menu in menu callback. This avoids illegal operations since the
+menu may still be visible when the callback code runs. This would lead to
+errors with newer freeglut versions. The patch updates the menu in an idle
+callback and manages a menu_dirty flag that indicates whether or not the menu
+requires updating.
 
 fix_non_virtual_destructor.diff
 ===============================
