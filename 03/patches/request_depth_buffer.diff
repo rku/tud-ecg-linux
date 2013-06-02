@@ -1,0 +1,13 @@
+diff --git a/03/src/application.cpp b/03/src/application.cpp
+index eed61b5..d3f7612 100644
+--- a/03/src/application.cpp
++++ b/03/src/application.cpp
+@@ -37,7 +37,7 @@ int application::run(int argc, char* argv[])
+ 
+	// Set the openGL display mode to double buffering and have
+	// channels R,G,B active. 
++	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
++	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+ 
+	// Initialize main window size
+	glutInitWindowSize(640, 480);

@@ -28,5 +28,11 @@ guard_msvc_specific_pragmas.diff
 Guard some MSVC specific pragmas to avoid warnings when using other compilers
 than MSC.
 
+request_depth_buffer.diff
+=========================
+
+Request depth buffer during glut display initialization. Why does the depth
+buffer work in windows though?
+
   [1]: http://www.opengl.org/resources/libraries/glut/spec3/node90.html
 
