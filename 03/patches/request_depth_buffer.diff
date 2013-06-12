@@ -6,7 +6,7 @@ index eed61b5..d3f7612 100644
  
 	// Set the openGL display mode to double buffering and have
 	// channels R,G,B active. 
-+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 +	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
  
 	// Initialize main window size
