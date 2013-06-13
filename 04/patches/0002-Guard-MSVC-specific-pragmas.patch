@@ -1,0 +1,38 @@
+From c25c61d4c1457478979ba9b2bce85bfcbc234232 Mon Sep 17 00:00:00 2001
+From: Rene Kuettner <rene@bitkanal.net>
+Date: Thu, 13 Jun 2013 16:21:06 +0200
+Subject: [PATCH 2/3] Guard MSVC specific pragmas
+
+---
+ 04/include/tiny_vec.h | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/04/include/tiny_vec.h b/04/include/tiny_vec.h
+index b30de02..0b18416 100644
+--- a/04/include/tiny_vec.h
++++ b/04/include/tiny_vec.h
+@@ -20,8 +20,11 @@ At the end of this file the data types "point2d", "point3d" and
+ #include <numeric>
+ #include <math.h>
+ 
++#ifdef _MSC_VER
+ #pragma warning( push )
+ #pragma warning( disable : 4996 )
++#endif // _MSC_VER
++
+ template <typename T,int N>
+ class tiny_vec
+ {
+@@ -954,7 +957,9 @@ typedef tiny_vec<double, 2> point2d;
+ typedef tiny_vec<double, 3> point3d;
+ typedef tiny_vec<double, 4> point4d;
+ 
++#ifdef _MSC_VER
+ #pragma warning( pop )
++#endif // _MSC_VER
+ 
+ 
+ 
+-- 
+1.8.3.1
+

@@ -1,0 +1,51 @@
+From 84147bae08f9993a114e4e686b4abd040a746533 Mon Sep 17 00:00:00 2001
+From: Rene Kuettner <rene@bitkanal.net>
+Date: Thu, 13 Jun 2013 16:26:59 +0200
+Subject: [PATCH 3/3] Fix non virtual destructor
+
+---
+ 04/include/abstract_curve.h | 5 ++++-
+ 04/src/abstract_curve.cpp   | 6 ++++++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/04/include/abstract_curve.h b/04/include/abstract_curve.h
+index 61cc845..50753ff 100644
+--- a/04/include/abstract_curve.h
++++ b/04/include/abstract_curve.h
+@@ -40,6 +40,9 @@ public:
+ 	// Initialize the curve and store a reference of the control points
+ 	abstract_curve(vector<point2d> &control_points);
+ 
++	// The virtual destructor
++	virtual ~abstract_curve();
++
+ 	// Get the minimum value of the domain
+ 	double get_min_t();
+ 	// Get the maximum value of the domain
+@@ -69,4 +72,4 @@ protected:
+ 	double t_min, t_max;
+ 	// The reference of the control points
+ 	vector<point2d> &control_points;
+-};
+\ No newline at end of file
++};
+diff --git a/04/src/abstract_curve.cpp b/04/src/abstract_curve.cpp
+index c924bfe..e337362 100644
+--- a/04/src/abstract_curve.cpp
++++ b/04/src/abstract_curve.cpp
+@@ -9,6 +9,12 @@ abstract_curve::abstract_curve(vector<point2d> &control_points): control_points(
+ 
+ 
+ 
++// The virtual destructor is required to avoid undefined behaviour when
++// deleting a pointer of type abstract_curve
++abstract_curve::~abstract_curve()
++{
++}
++
+ 
+ // Evaluate the curve at "t"
+ point2d abstract_curve::evaluate(double t)
+-- 
+1.8.3.1
+
