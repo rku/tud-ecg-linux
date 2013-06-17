@@ -28,6 +28,5 @@ newer freeglut versions. The (free)glut [documentation][1] advices:
 > is, ``popped up''). Use the menu status callback to know when to avoid menu
 > manipulation.
 
-The patch updates the menu in an idle callback and
-manages a menu_dirty flag that indicates whether or not the menu requires
-updating.
+The patch manages a menu_dirty flag that indicates whether or not the menu
+requires updating and updates it only when the menu is not visible.
