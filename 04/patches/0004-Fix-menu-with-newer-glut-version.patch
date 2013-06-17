@@ -1,0 +1,116 @@
+From d7d894e05034a35145055609cbabd397b642d7a4 Mon Sep 17 00:00:00 2001
+From: Rene Kuettner <rene@bitkanal.net>
+Date: Mon, 17 Jun 2013 22:18:35 +0200
+Subject: [PATCH] Fix menu with newer glut version
+
+---
+ 04/include/application.h |  4 ++++
+ 04/src/application.cpp   | 21 +++++++++++++++++----
+ 2 files changed, 21 insertions(+), 4 deletions(-)
+
+diff --git a/04/include/application.h b/04/include/application.h
+index f929a6a..72e8daf 100644
+--- a/04/include/application.h
++++ b/04/include/application.h
+@@ -94,6 +94,9 @@ private:
+     // Shall the grid be displayed?
+     bool show_grid;
+ 
++    // State for the menu
++    bool menu_dirty;
++
+     // The event method on key presses
+     void key_down(unsigned char key, int x, int y);
+ 
+@@ -125,6 +128,7 @@ private:
+     static void key_down_callback(unsigned char key, int x, int y);
+     static void mouse_button_callback(int button, int state, int x, int y);
+     static void mouse_move_callback(int x, int y);
++    static void menu_status_callback(int status);
+     static void context_menu_callback(int item);
+     static void display_callback();
+ 
+diff --git a/04/src/application.cpp b/04/src/application.cpp
+index dbb7dde..939983b 100644
+--- a/04/src/application.cpp
++++ b/04/src/application.cpp
+@@ -17,6 +17,7 @@ application::application()
+     spline_degree = 2;
+     show_basis_functions = false;
+     show_grid = true;
++    menu_dirty = true;
+ 
+     // Put 3 points into the list of control points
+     control_points.push_back(point2d(100.0, 400.0));
+@@ -76,6 +77,8 @@ int application::run(int argc, char* argv[])
+     glutMotionFunc(mouse_move_callback);
+     // ... when the mouse was moved without buttons pressed
+     glutPassiveMotionFunc(mouse_move_callback);
++    // ... when the menu state changes
++    glutMenuStateFunc(menu_status_callback);
+ 
+     // The main loop runs the program itself. It repeatedly asks
+     // the operating system whether there are events to process
+@@ -132,7 +135,7 @@ void application::context_menu_select(int item)
+         // Activate or deactivate rendering of basis functions
+         case MA_SHOW_BASIS:
+             show_basis_functions = !show_basis_functions;
+-            update_context_menu();
++            menu_dirty = true;
+             break;
+ 
+         // Increase the degree
+@@ -142,7 +145,7 @@ void application::context_menu_select(int item)
+             // using the new degree
+             if (dynamic_cast<bspline*>(curve)) 
+                 set_curve_type(new bspline(control_points, spline_degree));
+-            update_context_menu();
++            menu_dirty = true;
+             break;
+ 
+         // Decrease the degree
+@@ -153,7 +156,7 @@ void application::context_menu_select(int item)
+             // using the new degree
+             if (dynamic_cast<bspline*>(curve))
+                 set_curve_type(new bspline(control_points, spline_degree));
+-            update_context_menu();
++            menu_dirty = true;
+             break;
+ 
+         // Delete control points
+@@ -167,7 +170,7 @@ void application::context_menu_select(int item)
+         // Show or hide the grid
+         case MA_SHOW_GRID:
+             show_grid = !show_grid;
+-            update_context_menu();
++            menu_dirty = true;
+             break;
+     }
+ 
+@@ -244,6 +247,9 @@ void application::update_context_menu()
+         mname<<"[ ]";
+     mname<<" Show grid                   (g) ";
+     glutChangeToMenuEntry(10, mname.str().c_str(), MA_SHOW_GRID);
++
++    // clear menu_dirty flag
++    menu_dirty = false;
+ }
+ 
+ 
+@@ -418,6 +424,13 @@ void application::mouse_move_callback(int x, int y)
+     instance->mouse_move(x, y);
+ }
+ 
++void application::menu_status_callback(int status)
++{
++    if(status != GLUT_MENU_IN_USE && instance->menu_dirty)
++        instance->update_context_menu();
++}
++
++
+ void application::display_callback()
+ {
+     instance->display();
+-- 
+1.8.3.1
+
