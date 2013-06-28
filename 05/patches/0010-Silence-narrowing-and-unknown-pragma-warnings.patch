@@ -1,0 +1,25 @@
+From a065b5131685fecdede5b0101d73d02a0539ca98 Mon Sep 17 00:00:00 2001
+From: Rene Kuettner <rene@bitkanal.net>
+Date: Fri, 28 Jun 2013 13:47:46 +0200
+Subject: [PATCH 10/10] Silence narrowing and unknown pragma warnings
+
+---
+ 05/CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/05/CMakeLists.txt b/05/CMakeLists.txt
+index 9136f2e..99d8923 100644
+--- a/05/CMakeLists.txt
++++ b/05/CMakeLists.txt
+@@ -20,7 +20,7 @@ set(EXECUTABLE_OUTPUT_PATH ${RAYTRACER_BINARY_DIR})
+ include_directories(${RAYTRACER_SOURCE_DIR}/include
+     ${RAYTRACER_SOURCE_DIR}/dependencies/freeglut/include)
+ 
+-set(CMAKE_CXX_FLAGS "-Wall -O2")
++set(CMAKE_CXX_FLAGS "-Wall -O2 -Wno-narrowing -Wno-unknown-pragmas")
+ 
+ add_executable(raytracer
+     src/blinn_phong.cpp
+-- 
+1.8.3.1
+

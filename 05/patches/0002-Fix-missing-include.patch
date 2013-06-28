@@ -1,0 +1,24 @@
+From b47fb72c64db12afb0ff0e4e2805c6d686d6c0c6 Mon Sep 17 00:00:00 2001
+From: Rene Kuettner <rene@bitkanal.net>
+Date: Thu, 27 Jun 2013 15:27:18 +0200
+Subject: [PATCH 02/10] Fix missing include
+
+---
+ 05/include/tiny_vec.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/05/include/tiny_vec.h b/05/include/tiny_vec.h
+index 6daa7f5..fb34b3b 100644
+--- a/05/include/tiny_vec.h
++++ b/05/include/tiny_vec.h
+@@ -17,6 +17,7 @@ At the end of this file the data types "point2d", "point3d" and
+ #include <iostream>
+ #include <algorithm>
+ #include <cassert>
++#include <numeric>
+ #include <math.h>
+ 
+ #ifdef _MSC_VER
+-- 
+1.8.3.1
+

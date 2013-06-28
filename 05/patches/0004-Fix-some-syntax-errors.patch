@@ -1,0 +1,43 @@
+From 610b61c5e653b5241b0cbc3055b022340dcbe575 Mon Sep 17 00:00:00 2001
+From: Rene Kuettner <rene@bitkanal.net>
+Date: Thu, 27 Jun 2013 15:38:32 +0200
+Subject: [PATCH 04/10] Fix some syntax errors
+
+---
+ 05/include/mat.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/05/include/mat.h b/05/include/mat.h
+index 20f058c..e14e625 100644
+--- a/05/include/mat.h
++++ b/05/include/mat.h
+@@ -1192,7 +1192,7 @@ template <typename T>
+ mat<T> ones(size_t m, size_t n)
+ {
+ 	mat<T> r(m,n);
+-	r=(T)1
++	r=(T)1;
+ 	return r;
+ }
+ 
+@@ -1320,7 +1320,7 @@ inline bool write_fmat(mat<float>& m, const std::string& filename)
+ 	im.transpose();
+ 	int w = im.nrows();
+ 	int h = im.ncols();
+-	int n=w*h;
++	//int n=w*h;
+ 	if(w == 0||h == 0)
+ 		return false;
+ 
+@@ -1372,7 +1372,7 @@ inline bool write_imat(mat<int>& m, const std::string& filename)
+ 	im.transpose();
+ 	int w = im.nrows();
+ 	int h = im.ncols();
+-	int n=w*h;
++	//int n=w*h;
+ 	if(w == 0||h == 0)
+ 		return false;
+ 
+-- 
+1.8.3.1
+

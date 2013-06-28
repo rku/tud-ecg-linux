@@ -1,0 +1,81 @@
+From c999eaa9d79be6aee10626cf6f91c509ea28fd69 Mon Sep 17 00:00:00 2001
+From: Rene Kuettner <rene@bitkanal.net>
+Date: Fri, 28 Jun 2013 13:46:38 +0200
+Subject: [PATCH 09/10] Fix constructor initialization order
+
+---
+ 05/include/mat.h             | 2 ++
+ 05/include/tiny_vec.h        | 2 ++
+ 05/src/intersection_info.cpp | 2 +-
+ 05/src/material.cpp          | 2 +-
+ 05/src/scene.cpp             | 2 +-
+ 5 files changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/05/include/mat.h b/05/include/mat.h
+index e14e625..925931a 100644
+--- a/05/include/mat.h
++++ b/05/include/mat.h
+@@ -835,6 +835,8 @@ void gaxpy(const mat<T>& A, It1 xfirst, It1 xlast,It2 yfirst)
+ 	It1 itx = xfirst;
+ 	It2 ity = yfirst;
+ 
++    do { (void)ity; } while(0);
++
+ 	for(size_t i = 0; i < A.ncols(); i++)
+ 		saxpy(*itx++,A.col_begin(i),A.col_end(i),yfirst);
+ 		
+diff --git a/05/include/tiny_vec.h b/05/include/tiny_vec.h
+index bd8ef77..1477065 100644
+--- a/05/include/tiny_vec.h
++++ b/05/include/tiny_vec.h
+@@ -959,6 +959,8 @@ tiny_vec<T,N-1> unhomog_nml(const tiny_vec<T,N>& v)
+ 	tiny_vec<T,N-1> vh;
+ 	T w = *(v.end()-1);
+ 
++    do { (void)w; } while(0);
++
+ 	for(int i = 0; i < N-1; i++)
+ 		vh[i] = v[i];
+ 
+diff --git a/05/src/intersection_info.cpp b/05/src/intersection_info.cpp
+index 6a60607..025b744 100644
+--- a/05/src/intersection_info.cpp
++++ b/05/src/intersection_info.cpp
+@@ -96,7 +96,7 @@ tiny_vec<float,3> intersection_info::get_refracted_dir(float n1, float n2,bool &
+ 	
+ }
+ 
+-intersection_info::intersection_info():object(NULL),lambda(std::numeric_limits<float>::infinity())
++intersection_info::intersection_info():lambda(std::numeric_limits<float>::infinity()),object(NULL)
+ {
+ }
+ 
+diff --git a/05/src/material.cpp b/05/src/material.cpp
+index 691d36e..03d26af 100644
+--- a/05/src/material.cpp
++++ b/05/src/material.cpp
+@@ -4,7 +4,7 @@
+ 
+ 
+ material::material():diffuse(0.8f,0.8f,0.8f),specular(0.4f,0.4f,0.4f),
+-	reflection(0.0f),refraction(0.0f),shininess(80)
++	shininess(80),reflection(0.0f),refraction(0.0f)
+ {
+ }
+ 
+diff --git a/05/src/scene.cpp b/05/src/scene.cpp
+index cbee6ec..c4d4b04 100644
+--- a/05/src/scene.cpp
++++ b/05/src/scene.cpp
+@@ -3,7 +3,7 @@
+ 
+ 
+ 
+-scene::scene():view(NULL),root(NULL),clear_color(0.4f,0.4f,0.8f) 
++scene::scene():root(NULL),view(NULL),clear_color(0.4f,0.4f,0.8f) 
+ {}
+ 
+ scene::~scene()
+-- 
+1.8.3.1
+

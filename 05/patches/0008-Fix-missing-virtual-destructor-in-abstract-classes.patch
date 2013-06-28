@@ -1,0 +1,70 @@
+From 5219556e32622de5def8a41f48bfecfe8e6b8b0b Mon Sep 17 00:00:00 2001
+From: Rene Kuettner <rene@bitkanal.net>
+Date: Fri, 28 Jun 2013 13:35:07 +0200
+Subject: [PATCH 08/10] Fix missing virtual destructor in abstract classes
+
+---
+ 05/include/light_source.h | 1 +
+ 05/include/primitive.h    | 2 ++
+ 05/src/light_source.cpp   | 4 ++++
+ 05/src/primitive.cpp      | 4 +++-
+ 4 files changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/05/include/light_source.h b/05/include/light_source.h
+index 39b9e56..0d9d6f3 100644
+--- a/05/include/light_source.h
++++ b/05/include/light_source.h
+@@ -6,6 +6,7 @@
+ class light_source
+ {
+ public:
++    virtual ~light_source();
+ 	
+ 	void set_color( tiny_vec<float,3>& col ); 
+ 	void set_color( float r, float g, float b);
+diff --git a/05/include/primitive.h b/05/include/primitive.h
+index 707ff27..5e002fe 100644
+--- a/05/include/primitive.h
++++ b/05/include/primitive.h
+@@ -9,6 +9,8 @@ class primitive
+ {
+ 
+ public:
++    virtual ~primitive();
++
+ 	void set_name(const std::string& s);
+ 
+ 	std::string get_name() const;
+diff --git a/05/src/light_source.cpp b/05/src/light_source.cpp
+index 0ecb30a..432d732 100644
+--- a/05/src/light_source.cpp
++++ b/05/src/light_source.cpp
+@@ -2,6 +2,10 @@
+ #include "utils.h"
+ 
+ 
++light_source::~light_source()
++{
++}
++
+ 
+ void light_source::set_color( tiny_vec<float,3>& col ) 
+ { 
+diff --git a/05/src/primitive.cpp b/05/src/primitive.cpp
+index 57594b3..76f44e6 100644
+--- a/05/src/primitive.cpp
++++ b/05/src/primitive.cpp
+@@ -4,7 +4,9 @@
+ 
+ 
+ 
+-
++primitive::~primitive()
++{
++}
+ 
+ void primitive::set_name(const std::string& s)
+ {
+-- 
+1.8.3.1
+

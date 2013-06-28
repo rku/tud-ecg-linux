@@ -1,0 +1,33 @@
+From 9f7630f814786019c3df9f832babd1460ec3e2ac Mon Sep 17 00:00:00 2001
+From: Rene Kuettner <rene@bitkanal.net>
+Date: Thu, 27 Jun 2013 15:26:05 +0200
+Subject: [PATCH 01/10] Guard some MSVC specific pragmas in vec.h
+
+---
+ 05/include/vec.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/05/include/vec.h b/05/include/vec.h
+index a46ee9b..e513487 100644
+--- a/05/include/vec.h
++++ b/05/include/vec.h
+@@ -1,7 +1,9 @@
+ #ifndef VEC_H
+ #define VEC_H
+ 
++#ifdef _MSC_VER
+ #pragma	warning (disable: 4996)
++#endif
+ 
+ #include <cmath>
+ #include <iostream>
+@@ -595,4 +597,4 @@ const vec<T>  lin_space(const T& first_val, const T& last_val, unsigned N=10)
+ 
+ 
+ 
+-#endif
+\ No newline at end of file
++#endif
+-- 
+1.8.3.1
+

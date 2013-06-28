@@ -1,0 +1,66 @@
+From 193aa79a254efc4e34a08cad01ad23b0531387e8 Mon Sep 17 00:00:00 2001
+From: Rene Kuettner <rene@bitkanal.net>
+Date: Thu, 27 Jun 2013 15:35:48 +0200
+Subject: [PATCH 03/10] Add 'typename' keyword for dependent scopes
+
+---
+ 05/include/mat.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/05/include/mat.h b/05/include/mat.h
+index 9f5084c..20f058c 100644
+--- a/05/include/mat.h
++++ b/05/include/mat.h
+@@ -329,11 +329,11 @@ public:
+ 	operator mat<S>()
+ 	{
+ 		mat<S> u(_nrows,_ncols);
+-		mat<S>::iterator it = u.begin();
++		typename mat<S>::iterator it = u.begin();
+ #ifdef _HAS_CPP0X
+ 		std::for_each(begin(),end(),[&it](const T& v){*it++ = (S) v; });
+ #else
+-		mat<S>::iterator end = u.end();
++		typename mat<S>::iterator end = u.end();
+ 		iterator vit = begin();
+ 		while(it != end)
+ 			*it++ = (S) *vit++;
+@@ -848,7 +848,7 @@ vec<T> operator*(const mat<T>& m, const vec<T>& v)
+ 	vec<T> r;
+ 	r.zeros(m.nrows());
+ 	
+-	vec<T>::const_iterator it = v.begin();  
++	typename vec<T>::const_iterator it = v.begin();  
+ 	for(size_t i = 0; i < m.ncols(); i++)
+ 		saxpy(*it++,m.col_begin(i), m.col_end(i),r.begin());
+ 	
+@@ -862,7 +862,7 @@ vec<T> operator*(const mat<T>& m, const tiny_vec<T,N>& v)
+ 	vec<T> r;
+ 	r.zeros(m.nrows());
+ 	
+-	vec<T>::const_iterator it = v.begin();  
++	typename vec<T>::const_iterator it = v.begin();  
+ 	for(size_t i = 0; i < m.ncols(); i++)
+ 		saxpy(*it++,m.col_begin(i), m.col_end(i),r.begin());
+ 	
+@@ -1247,7 +1247,7 @@ template <typename T>
+ mat<T> cross_mat(vec<T>& v)
+ {
+ 	mat<T> C(3,3);
+-	mat<T>::iterator it = C.begin();
++	typename mat<T>::iterator it = C.begin();
+ 	
+ 	*it++ = 0;
+ 	*it++ = v(2);
+@@ -1269,7 +1269,7 @@ template <typename T>
+ mat<T> cross_mat(tiny_vec<T,3>& v)
+ {
+ 	mat<T> C(3,3);
+-	mat<T>::iterator it = C.begin();
++	typename mat<T>::iterator it = C.begin();
+ 	
+ 	*it++ = 0;
+ 	*it++ = v(2);
+-- 
+1.8.3.1
+

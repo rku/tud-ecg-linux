@@ -1,0 +1,467 @@
+From 1c7a8632ce62cb7723871cab8b5d219689969bb5 Mon Sep 17 00:00:00 2001
+From: Rene Kuettner <rene@bitkanal.net>
+Date: Fri, 28 Jun 2013 13:25:59 +0200
+Subject: [PATCH 06/10] Pass objects by const references
+
+---
+ 05/include/box.h                  |  8 ++++----
+ 05/include/cylinder.h             |  6 +++---
+ 05/include/intersection_info.h    |  4 ++--
+ 05/include/obj_reader.h           |  2 +-
+ 05/include/plane.h                |  6 +++---
+ 05/include/primitive.h            |  2 +-
+ 05/include/primitive_group.h      |  4 ++--
+ 05/include/sphere.h               |  6 +++---
+ 05/include/transformation_group.h |  8 ++++----
+ 05/include/triangle.h             | 10 +++++-----
+ 05/include/vec.h                  |  2 +-
+ 05/src/box.cpp                    |  6 +++---
+ 05/src/cylinder.cpp               |  4 ++--
+ 05/src/intersection_info.cpp      |  2 +-
+ 05/src/plane.cpp                  |  4 ++--
+ 05/src/primitive_group.cpp        |  4 ++--
+ 05/src/sphere.cpp                 |  4 ++--
+ 05/src/transformation_group.cpp   |  6 +++---
+ 05/src/triangle.cpp               |  8 ++++----
+ 19 files changed, 48 insertions(+), 48 deletions(-)
+
+diff --git a/05/include/box.h b/05/include/box.h
+index 2aa0778..90aa3bc 100644
+--- a/05/include/box.h
++++ b/05/include/box.h
+@@ -16,9 +16,9 @@ public:
+ 
+ 	std::pair<tiny_vec<float,3>, tiny_vec<float,3> > calc_bounds();
+ 
+-    void extend(tiny_vec<float,3> a);
++    void extend(const tiny_vec<float,3> a);
+ 
+-	void extend(std::pair<tiny_vec<float,3>,tiny_vec<float,3> >& minmax);
++	void extend(const std::pair<const tiny_vec<float,3>, const tiny_vec<float,3> >& minmax);
+  
+     void extend(box& b);
+  
+@@ -41,7 +41,7 @@ public:
+ 
+ 	bool closest_intersection(intersection_info* hit, float min_lambda,primitive* dont_hit);
+ 
+-	bool any_intersection(ray<float>& r,float min_lambda, float max_lambda, primitive* dont_hit);
++	bool any_intersection(const ray<float>& r,float min_lambda, float max_lambda, primitive* dont_hit);
+ private:
+ 	tiny_vec<float,3> minimum; 
+     tiny_vec<float,3> maximum; 
+@@ -49,4 +49,4 @@ private:
+ 
+  };
+ 
+-#endif
+\ No newline at end of file
++#endif
+diff --git a/05/include/cylinder.h b/05/include/cylinder.h
+index 0ccb0b4..885399b 100644
+--- a/05/include/cylinder.h
++++ b/05/include/cylinder.h
+@@ -7,13 +7,13 @@ class cylinder: public primitive
+ public:
+ 	cylinder();
+ 	
+-	cylinder(tiny_vec<float,3>& p1, tiny_vec<float,3>& p2,const float& r);
++	cylinder(const tiny_vec<float,3>& p1, const tiny_vec<float,3>& p2, const float& r);
+ 	
+ 	void calc_normal(intersection_info* hit);
+ 	
+ 	bool closest_intersection(intersection_info* hit, float min_lambda, primitive* dont_hit);
+ 
+-	bool any_intersection(ray<float>& r,float min_lambda, float max_lambda, primitive* dont_hit); 
++	bool any_intersection(const ray<float>& r,float min_lambda, float max_lambda, primitive* dont_hit); 
+ 			
+ 	void set_finite(bool b);
+ 	
+@@ -35,4 +35,4 @@ private:
+ 
+ };
+ 
+-#endif
+\ No newline at end of file
++#endif
+diff --git a/05/include/intersection_info.h b/05/include/intersection_info.h
+index 171ee9d..26fa68a 100644
+--- a/05/include/intersection_info.h
++++ b/05/include/intersection_info.h
+@@ -40,7 +40,7 @@ public:
+ 	tiny_vec<float,3> get_refracted_dir(float n1, float n2,bool &total_reflection) const;
+ 
+ 	intersection_info();
+-	intersection_info(ray<float>& r, float l) ;
++	intersection_info(const ray<float>& r, float l) ;
+ };
+ 
+-#endif
+\ No newline at end of file
++#endif
+diff --git a/05/include/obj_reader.h b/05/include/obj_reader.h
+index e993ce2..8a6e446 100644
+--- a/05/include/obj_reader.h
++++ b/05/include/obj_reader.h
+@@ -37,7 +37,7 @@ struct obj_reader
+     std::vector<obj_polygon> faces; 
+ 
+ 
+-	void rescale(tiny_vec<float,3>& minv, tiny_vec<float,3>& maxv, bool uniform_scale=true)
++	void rescale(const tiny_vec<float,3>& minv, const tiny_vec<float,3>& maxv, bool uniform_scale=true)
+ 	{
+ 		tiny_vec<float,3> lo(std::numeric_limits<float>::infinity(),std::numeric_limits<float>::infinity(),std::numeric_limits<float>::infinity());
+ 		tiny_vec<float,3> hi(-std::numeric_limits<float>::infinity(),-std::numeric_limits<float>::infinity(),-std::numeric_limits<float>::infinity());
+diff --git a/05/include/plane.h b/05/include/plane.h
+index 5591e2c..884afbf 100644
+--- a/05/include/plane.h
++++ b/05/include/plane.h
+@@ -8,11 +8,11 @@ class plane: public primitive
+ public:
+ 	plane();
+ 	
+-	plane(tiny_vec<float,3>& nml, float d);
++	plane(const tiny_vec<float,3>& nml, float d);
+ 
+ 	bool closest_intersection(intersection_info* hit, float min_lambda,primitive* dont_hit);
+ 	
+-	bool any_intersection(ray<float>& r,float min_lambda, float max_lambda, primitive* dont_hit); 
++	bool any_intersection(const ray<float>& r,float min_lambda, float max_lambda, primitive* dont_hit); 
+ 	
+ 
+ private:
+@@ -22,4 +22,4 @@ private:
+ 
+ };
+ 
+-#endif
+\ No newline at end of file
++#endif
+diff --git a/05/include/primitive.h b/05/include/primitive.h
+index 1e581a6..707ff27 100644
+--- a/05/include/primitive.h
++++ b/05/include/primitive.h
+@@ -27,7 +27,7 @@ public:
+ 
+ 	virtual bool closest_intersection(intersection_info* hit,float min_lambda,primitive *dont_hit)  =0;
+ 	
+-	virtual bool any_intersection( ray<float>& r,float min_lambda, float max_lambda,primitive* dont_hit) =0;
++	virtual bool any_intersection(const ray<float>& r,float min_lambda, float max_lambda,primitive* dont_hit) =0;
+ 
+ 
+ protected:
+diff --git a/05/include/primitive_group.h b/05/include/primitive_group.h
+index 977e631..0d5dcbf 100644
+--- a/05/include/primitive_group.h
++++ b/05/include/primitive_group.h
+@@ -12,7 +12,7 @@ public:
+ 
+ 	virtual bool closest_intersection(intersection_info* hit, float min_lambda,primitive* dont_hit);
+ 
+-	virtual bool any_intersection(ray<float>& r,float min_lambda, float max_lambda,primitive* dont_hit);
++	virtual bool any_intersection(const ray<float>& r,float min_lambda, float max_lambda,primitive* dont_hit);
+ 
+ 	virtual void add_primitive(primitive* p);
+ 	
+@@ -24,4 +24,4 @@ protected:
+ 
+ };
+ 
+-#endif
+\ No newline at end of file
++#endif
+diff --git a/05/include/sphere.h b/05/include/sphere.h
+index 35bcc1d..1b42687 100644
+--- a/05/include/sphere.h
++++ b/05/include/sphere.h
+@@ -10,7 +10,7 @@ public:
+ 
+ 	sphere(float cx, float cy, float cz, float r);
+ 	
+-	sphere(tiny_vec<float,3>& c, float r);
++	sphere(const tiny_vec<float,3>& c, float r);
+ 
+ 	void set_radius(float r);
+ 	
+@@ -18,7 +18,7 @@ public:
+ 
+ 	bool closest_intersection(intersection_info* hit, float min_lambda, primitive* dont_hit);
+ 	
+-	bool any_intersection(ray<float>& r,float min_lambda,float max_lambda, primitive* dont_hit);
++	bool any_intersection(const ray<float>& r,float min_lambda,float max_lambda, primitive* dont_hit);
+ 
+ protected:
+ 	void calc_normal(intersection_info* hit) const;
+@@ -31,4 +31,4 @@ private:
+ 
+ };
+ 
+-#endif
+\ No newline at end of file
++#endif
+diff --git a/05/include/transformation_group.h b/05/include/transformation_group.h
+index f6e7461..0168e01 100644
+--- a/05/include/transformation_group.h
++++ b/05/include/transformation_group.h
+@@ -11,13 +11,13 @@ class transformation_group: public primitive_group
+ public:
+ 	transformation_group();
+ 
+-	transformation_group(mat<float>& tr);
++	transformation_group(const mat<float>& tr);
+ 
+-	void set_transformation(mat<float>& T);
++	void set_transformation(const mat<float>& T);
+ 
+ 	virtual bool closest_intersection(intersection_info* hit, float min_lambda,primitive* dont_hit);
+ 
+-	virtual bool any_intersection( ray<float>& r,float min_lambda, float max_lambda,primitive* dont_hit);
++	virtual bool any_intersection(const ray<float>& r,float min_lambda, float max_lambda,primitive* dont_hit);
+ 
+ private:
+ 	mat<float> trafo;
+@@ -25,4 +25,4 @@ private:
+ 	mat<float> trafo_inv_transpose;
+ };
+ 
+-#endif
+\ No newline at end of file
++#endif
+diff --git a/05/include/triangle.h b/05/include/triangle.h
+index d8d6beb..e56add3 100644
+--- a/05/include/triangle.h
++++ b/05/include/triangle.h
+@@ -7,16 +7,16 @@ class triangle: public primitive
+ {
+ public:
+ 
+-	triangle(tiny_vec<float,3>& p0,tiny_vec<float,3>& p1,tiny_vec<float,3>& p2,
+-		tiny_vec<float,3>& n1,tiny_vec<float,3>& n2,tiny_vec<float,3>& n3);
++	triangle(const tiny_vec<float,3>& p0, const tiny_vec<float,3>& p1, const tiny_vec<float,3>& p2,
++		const tiny_vec<float,3>& n1, const tiny_vec<float,3>& n2, const tiny_vec<float,3>& n3);
+ 	
+-	triangle(tiny_vec<float,3>& p0, tiny_vec<float,3>& p1, tiny_vec<float,3>& p2);
++	triangle(const tiny_vec<float,3>& p0, const tiny_vec<float,3>& p1, const tiny_vec<float,3>& p2);
+ 
+ 	std::pair<tiny_vec<float,3>, tiny_vec<float,3> > calc_bounds();
+ 	
+ 	bool closest_intersection(intersection_info* hit, float min_lambda, primitive* dont_hit);
+ 
+-	bool any_intersection(ray<float>& r,float min_lambda, float max_lambda,primitive* dont_hit);
++	bool any_intersection(const ray<float>& r,float min_lambda, float max_lambda,primitive* dont_hit);
+ 
+ protected:
+ 	void calc_normal(intersection_info* hit, float  u, float v);
+@@ -30,4 +30,4 @@ private:
+ 	
+ };
+ 
+-#endif
+\ No newline at end of file
++#endif
+diff --git a/05/include/vec.h b/05/include/vec.h
+index e513487..f2e75fd 100644
+--- a/05/include/vec.h
++++ b/05/include/vec.h
+@@ -261,7 +261,7 @@ public:
+ 		std::for_each(begin(),end(),[&s](T& elem){elem+=s;});
+ #else
+ 		for(int i = 0; i < size(); i++)
+-			data[i]+= s;
++			_data[i]+= s;
+ #endif
+ 		return *this;
+ 	}
+diff --git a/05/src/box.cpp b/05/src/box.cpp
+index accb56b..6680d47 100644
+--- a/05/src/box.cpp
++++ b/05/src/box.cpp
+@@ -24,7 +24,7 @@ std::pair<tiny_vec<float,3>, tiny_vec<float,3> > box::calc_bounds()
+ 	return std::make_pair(minimum,maximum);
+ }
+ 
+-void box::extend(tiny_vec<float,3> a)
++void box::extend(const tiny_vec<float,3> a)
+ { 
+ 	for(int i = 0; i < 3;i++)
+ 	{
+@@ -33,7 +33,7 @@ void box::extend(tiny_vec<float,3> a)
+ 	}
+ }
+ 
+-void box::extend(std::pair<tiny_vec<float,3>,tiny_vec<float,3> >& minmax)
++void box::extend(const std::pair<const tiny_vec<float,3>, const tiny_vec<float,3> >& minmax)
+ {
+ 	extend(minmax.first);
+ 	extend(minmax.second);
+@@ -175,7 +175,7 @@ bool box::closest_intersection(intersection_info* hit, float min_lambda,primitiv
+ 	
+ }
+ 
+- bool box::any_intersection(ray<float>& r,float min_lambda, float max_lambda, primitive* dont_hit)
++ bool box::any_intersection(const ray<float>& r,float min_lambda, float max_lambda, primitive* dont_hit)
+  {
+ 	 if(dont_hit == this)
+ 		return false;
+diff --git a/05/src/cylinder.cpp b/05/src/cylinder.cpp
+index 5a2e225..0abc5a7 100644
+--- a/05/src/cylinder.cpp
++++ b/05/src/cylinder.cpp
+@@ -5,7 +5,7 @@ cylinder::cylinder():bottom(0,0,0),top(0,1,0),finite(true),caps(true),radius(0.2
+ {
+ }
+ 	
+-cylinder::cylinder(tiny_vec<float,3>& p1, tiny_vec<float,3>& p2,const float& r)
++cylinder::cylinder(const tiny_vec<float,3>& p1, const tiny_vec<float,3>& p2,const float& r)
+ {
+ 	bottom = p1;
+ 	top = p2;
+@@ -129,7 +129,7 @@ bool cylinder::closest_intersection(intersection_info* hit, float min_lambda, pr
+ 	return ret;
+ }
+ 
+-bool cylinder::any_intersection(ray<float>& r,float min_lambda, float max_lambda, primitive* dont_hit) 
++bool cylinder::any_intersection(const ray<float>& r,float min_lambda, float max_lambda, primitive* dont_hit) 
+ {
+ 	if(dont_hit == this)
+ 		return false;
+diff --git a/05/src/intersection_info.cpp b/05/src/intersection_info.cpp
+index b9bd306..6a60607 100644
+--- a/05/src/intersection_info.cpp
++++ b/05/src/intersection_info.cpp
+@@ -100,6 +100,6 @@ intersection_info::intersection_info():object(NULL),lambda(std::numeric_limits<f
+ {
+ }
+ 
+-intersection_info::intersection_info(ray<float>& r, float l) : incoming_ray(r),lambda(l),object(NULL)
++intersection_info::intersection_info(const ray<float>& r, float l) : incoming_ray(r),lambda(l),object(NULL)
+ {
+ }
+diff --git a/05/src/plane.cpp b/05/src/plane.cpp
+index 3bccc98..d1a7e15 100644
+--- a/05/src/plane.cpp
++++ b/05/src/plane.cpp
+@@ -6,7 +6,7 @@
+ 
+ plane::plane():normal(0.0f,1.0f,0.0f),distance(0){}
+ 
+-plane::plane(tiny_vec<float,3>& nml, float d)
++plane::plane(const tiny_vec<float,3>& nml, float d)
+ {
+ 	normal=nml;
+ 	normal.normalize();
+@@ -41,7 +41,7 @@ bool plane::closest_intersection(intersection_info* hit, float min_lambda,primit
+ 
+ }
+ 
+-bool plane::any_intersection(ray<float>& r,float min_lambda, float max_lambda, primitive* dont_hit) 
++bool plane::any_intersection(const ray<float>& r,float min_lambda, float max_lambda, primitive* dont_hit) 
+ {
+ 	if(dont_hit == this)
+ 		return false;
+diff --git a/05/src/primitive_group.cpp b/05/src/primitive_group.cpp
+index 351dfae..65774bb 100644
+--- a/05/src/primitive_group.cpp
++++ b/05/src/primitive_group.cpp
+@@ -24,7 +24,7 @@ bool primitive_group::closest_intersection(intersection_info* hit, float min_lam
+ 	return intersect;
+ }
+ 
+-bool primitive_group::any_intersection(ray<float>& r,float min_lambda, float max_lambda,primitive* dont_hit)
++bool primitive_group::any_intersection(const ray<float>& r,float min_lambda, float max_lambda,primitive* dont_hit)
+ {
+ 	if(dont_hit == this)
+ 		return false;
+@@ -59,4 +59,4 @@ void primitive_group::clear()
+ 	primitives.clear();
+ }
+ 
+-	
+\ No newline at end of file
++	
+diff --git a/05/src/sphere.cpp b/05/src/sphere.cpp
+index 563062f..d8cecb3 100644
+--- a/05/src/sphere.cpp
++++ b/05/src/sphere.cpp
+@@ -12,7 +12,7 @@ sphere::sphere(float cx, float cy, float cz, float r):center(cx,cy,cz),radius(r)
+ 	sqr_radius=r*r;
+ }
+ 
+-sphere::sphere(tiny_vec<float,3>& c, float r):center(c),radius(r)
++sphere::sphere(const tiny_vec<float,3>& c, float r):center(c),radius(r)
+ {
+ 	sqr_radius=r*r;
+ }
+@@ -44,7 +44,7 @@ bool sphere::closest_intersection(intersection_info* hit, float min_lambda, prim
+ 	//student end
+ }
+ 
+-bool sphere::any_intersection(ray<float>& r,float min_lambda,float max_lambda, primitive* dont_hit)
++bool sphere::any_intersection(const ray<float>& r,float min_lambda,float max_lambda, primitive* dont_hit)
+ {
+ 	//student begin
+ 	//see task 1.2.1
+diff --git a/05/src/transformation_group.cpp b/05/src/transformation_group.cpp
+index 8f02065..350fe3c 100644
+--- a/05/src/transformation_group.cpp
++++ b/05/src/transformation_group.cpp
+@@ -8,12 +8,12 @@ transformation_group::transformation_group()
+ 	trafo = eye<float>(4);	
+ }
+ 
+-transformation_group::transformation_group(mat<float>& tr)
++transformation_group::transformation_group(const mat<float>& tr)
+ {
+ 	set_transformation(tr);
+ }
+ 
+-void transformation_group::set_transformation(mat<float>& T)
++void transformation_group::set_transformation(const mat<float>& T)
+ {
+ 	trafo = T;
+ 
+@@ -49,7 +49,7 @@ bool transformation_group::closest_intersection(intersection_info* hit, float mi
+ 
+ }
+ 
+-bool transformation_group::any_intersection( ray<float>& r,float min_lambda, float max_lambda,primitive* dont_hit) 
++bool transformation_group::any_intersection(const ray<float>& r,float min_lambda, float max_lambda,primitive* dont_hit) 
+ {
+ 	ray<float> rt = r;
+ 	rt.transform(trafo_inv);
+diff --git a/05/src/triangle.cpp b/05/src/triangle.cpp
+index dca534b..cfbef65 100644
+--- a/05/src/triangle.cpp
++++ b/05/src/triangle.cpp
+@@ -3,8 +3,8 @@
+ 
+ 
+ 
+-triangle::triangle(tiny_vec<float,3>& p0,tiny_vec<float,3>& p1,tiny_vec<float,3>& p2,
+-	tiny_vec<float,3>& n1,tiny_vec<float,3>& n2,tiny_vec<float,3>& n3)
++triangle::triangle(const tiny_vec<float,3>& p0, const tiny_vec<float,3>& p1, const tiny_vec<float,3>& p2,
++	const tiny_vec<float,3>& n1, const tiny_vec<float,3>& n2, const tiny_vec<float,3>& n3)
+ {
+ 	v0=p0;
+ 	edge1=p1-p0;
+@@ -19,7 +19,7 @@ triangle::triangle(tiny_vec<float,3>& p0,tiny_vec<float,3>& p1,tiny_vec<float,3>
+ 	normal.normalize();
+ }
+ 	
+-triangle::triangle(tiny_vec<float,3>& p0,tiny_vec<float,3>& p1,tiny_vec<float,3>& p2)
++triangle::triangle(const tiny_vec<float,3>& p0, const tiny_vec<float,3>& p1, const tiny_vec<float,3>& p2)
+ 	
+ {
+ 	v0.set(p0(0),p0(1),p0(2));
+@@ -72,7 +72,7 @@ bool triangle::closest_intersection(intersection_info* hit, float min_lambda, pr
+ 	//student end
+ }
+ 
+-bool triangle::any_intersection(ray<float>& r,float min_lambda, float max_lambda,primitive* dont_hit)
++bool triangle::any_intersection(const ray<float>& r,float min_lambda, float max_lambda,primitive* dont_hit)
+ {
+ 	
+ 	//student begin
+-- 
+1.8.3.1
+
