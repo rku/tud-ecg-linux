@@ -1,0 +1,32 @@
+From a792dd7a4bd9a21fa381376afbf6f369199889c7 Mon Sep 17 00:00:00 2001
+From: Rene Kuettner <rene@bitkanal.net>
+Date: Fri, 28 Jun 2013 14:17:56 +0200
+Subject: [PATCH] Mark variable in math.h as unused
+
+---
+ 05/include/mat.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/05/include/mat.h b/05/include/mat.h
+index 5afb0c6..7fe0698 100644
+--- a/05/include/mat.h
++++ b/05/include/mat.h
+@@ -1326,6 +1326,7 @@ inline bool write_fmat(mat<float>& m, const std::string& filename)
+ 	if(w == 0||h == 0)
+ 		return false;
+ 
++    do { (void)n; } while(0);
+ 	
+ 	std::ofstream myFile (filename.c_str(), std::ios::binary);
+     if (myFile) 
+@@ -1378,6 +1379,7 @@ inline bool write_imat(mat<int>& m, const std::string& filename)
+ 	if(w == 0||h == 0)
+ 		return false;
+ 
++    do { (void)n; } while(0);
+ 	
+ 	std::ofstream myFile (filename.c_str(), std::ios::binary);
+     if (myFile) 
+-- 
+1.8.3.1
+
