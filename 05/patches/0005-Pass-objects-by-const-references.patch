@@ -1,7 +1,7 @@
-From 1c7a8632ce62cb7723871cab8b5d219689969bb5 Mon Sep 17 00:00:00 2001
+From c9b597c0f4debc22b000c88f049828414f773f88 Mon Sep 17 00:00:00 2001
 From: Rene Kuettner <rene@bitkanal.net>
 Date: Fri, 28 Jun 2013 13:25:59 +0200
-Subject: [PATCH 06/10] Pass objects by const references
+Subject: [PATCH 05/10] Pass objects by const references
 
 ---
  05/include/box.h                  |  8 ++++----

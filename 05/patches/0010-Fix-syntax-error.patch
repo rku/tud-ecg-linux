@@ -1,0 +1,25 @@
+From d12d7640534cf6a5d2fa156070c5d8366bdfdcf9 Mon Sep 17 00:00:00 2001
+From: Rene Kuettner <rene@bitkanal.net>
+Date: Fri, 28 Jun 2013 14:13:15 +0200
+Subject: [PATCH 10/10] Fix syntax error
+
+---
+ 05/include/mat.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/05/include/mat.h b/05/include/mat.h
+index 6584291..5afb0c6 100644
+--- a/05/include/mat.h
++++ b/05/include/mat.h
+@@ -1194,7 +1194,7 @@ template <typename T>
+ mat<T> ones(size_t m, size_t n)
+ {
+ 	mat<T> r(m,n);
+-	r=(T)1
++	r=(T)1;
+ 	return r;
+ }
+ 
+-- 
+1.8.3.1
+

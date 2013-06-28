@@ -1,7 +1,7 @@
-From 7b8aaf9f498459f4975dfba76cce2bfab79bb963 Mon Sep 17 00:00:00 2001
+From 1b76aba812ec46591d69e39ec41362df2ed9ce80 Mon Sep 17 00:00:00 2001
 From: Rene Kuettner <rene@bitkanal.net>
 Date: Thu, 27 Jun 2013 15:43:56 +0200
-Subject: [PATCH 05/10] Fix initialization order
+Subject: [PATCH 04/10] Fix initialization order
 
 ---
  05/src/cylinder.cpp | 2 +-

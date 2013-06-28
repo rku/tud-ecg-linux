@@ -1,7 +1,7 @@
-From 5219556e32622de5def8a41f48bfecfe8e6b8b0b Mon Sep 17 00:00:00 2001
+From b1f8eb62c0c89e07475673d780f1d92a1d361c65 Mon Sep 17 00:00:00 2001
 From: Rene Kuettner <rene@bitkanal.net>
 Date: Fri, 28 Jun 2013 13:35:07 +0200
-Subject: [PATCH 08/10] Fix missing virtual destructor in abstract classes
+Subject: [PATCH 07/10] Fix missing virtual destructor in abstract classes
 
 ---
  05/include/light_source.h | 1 +

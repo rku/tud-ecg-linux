@@ -1,7 +1,7 @@
-From c999eaa9d79be6aee10626cf6f91c509ea28fd69 Mon Sep 17 00:00:00 2001
+From ddbb6653bfc27e3fa8460a27f00f2ba29b749d0f Mon Sep 17 00:00:00 2001
 From: Rene Kuettner <rene@bitkanal.net>
 Date: Fri, 28 Jun 2013 13:46:38 +0200
-Subject: [PATCH 09/10] Fix constructor initialization order
+Subject: [PATCH 08/10] Fix constructor initialization order
 
 ---
  05/include/mat.h             | 2 ++
@@ -12,7 +12,7 @@ Subject: [PATCH 09/10] Fix constructor initialization order
  5 files changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/05/include/mat.h b/05/include/mat.h
-index e14e625..925931a 100644
+index 20f058c..6584291 100644
 --- a/05/include/mat.h
 +++ b/05/include/mat.h
 @@ -835,6 +835,8 @@ void gaxpy(const mat<T>& A, It1 xfirst, It1 xlast,It2 yfirst)

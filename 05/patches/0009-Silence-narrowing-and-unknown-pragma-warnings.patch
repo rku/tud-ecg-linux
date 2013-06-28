@@ -1,7 +1,7 @@
-From a065b5131685fecdede5b0101d73d02a0539ca98 Mon Sep 17 00:00:00 2001
+From 251843380bd10e725d5c7aa57f056fc71dfbc16f Mon Sep 17 00:00:00 2001
 From: Rene Kuettner <rene@bitkanal.net>
 Date: Fri, 28 Jun 2013 13:47:46 +0200
-Subject: [PATCH 10/10] Silence narrowing and unknown pragma warnings
+Subject: [PATCH 09/10] Silence narrowing and unknown pragma warnings
 
 ---
  05/CMakeLists.txt | 2 +-
