@@ -20,7 +20,7 @@ set(EXECUTABLE_OUTPUT_PATH ${RAYTRACER_BINARY_DIR})
 include_directories(${RAYTRACER_SOURCE_DIR}/include
     ${RAYTRACER_SOURCE_DIR}/dependencies/freeglut/include)
 
-set(CMAKE_CXX_FLAGS "-Wall -O2")
+set(CMAKE_CXX_FLAGS "-Wall -O2 -Wno-narrowing -Wno-unknown-pragmas")
 
 add_executable(raytracer
     src/blinn_phong.cpp
