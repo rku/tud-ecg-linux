@@ -5,7 +5,7 @@ project(RAYTRACER)
 
 # add target to build zip file
 set(ZIPFILE "${RAYTRACER_BINARY_DIR}/übung5_lab.zip")
-set(ZIPCMD  git ls-tree -r HEAD | cut -f 2 | zip -@ '${ZIPFILE}')
+set(ZIPCMD  git -c core.quotepath=false ls-tree -r HEAD --name-only | grep -v data/buddha.obj | zip -@ '${ZIPFILE}')
 
 message(STATUS ${ZIPCMD})
 add_custom_target(zip
