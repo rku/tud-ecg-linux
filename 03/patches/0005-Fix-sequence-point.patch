@@ -1,0 +1,29 @@
+From 9fdde7835ca2b5afbcab6e243ac3db350b120a14 Mon Sep 17 00:00:00 2001
+From: Rene Kuettner <rene@bitkanal.net>
+Date: Fri, 28 Jun 2013 14:33:00 +0200
+Subject: [PATCH] Fix sequence point
+
+---
+ 05/include/tiny_vec.h | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/05/include/tiny_vec.h b/05/include/tiny_vec.h
+index 4a17b47..d25ecb1 100644
+--- a/05/include/tiny_vec.h
++++ b/05/include/tiny_vec.h
+@@ -814,8 +814,10 @@ T tiny_vec<T,N>::sqr_length() const
+ {
+ 	iterator it= (T*)begin();
+ 	T l = 0;
+-	while(it != end())
+-		l += (*it)*(*it++);
++	while(it != end()) {
++		l += (*it)*(*it);
++		++it;
++	}
+ 
+ 	return l;
+ }
+-- 
+1.8.3.1
+
